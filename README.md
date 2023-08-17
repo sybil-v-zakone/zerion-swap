@@ -1,2 +1,3 @@
 # zerion-swap
-testing some shit here, e.g. polygon's matic -> usdc swap
+[Polygon only]
+Swapping MATIC->USDC/USDT and vice versa.

@@ -2,3 +2,4 @@
 __pycache__/
 .env
 swaps.py
+testing.py

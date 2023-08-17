@@ -1,16 +1,17 @@
 import os
-from client import ZerionClient
+from core.client import ZerionClient
 from dotenv import load_dotenv, find_dotenv
+from config import polygon_rpc
+from core.heater import Heater
+from utils.constants import USDT_TOKEN, USDC_TOKEN, MATIC_TOKEN
 
 load_dotenv(find_dotenv())
-polygon_rpc = "https://rpc.ankr.com/polygon"
 private_key = os.environ.get("MAIN_WALLET_PRIVATE_KEY")
 
 
 def main():
-    client = ZerionClient(rpc=polygon_rpc, private_key=private_key)
-    swap_hash = client.swap_matic_usdc(0.01)
-    client.verify_tx(swap_hash)
+    heater = Heater()
+    heater.warmup()
 
 
 if __name__ == "__main__":
