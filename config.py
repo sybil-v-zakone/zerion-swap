@@ -1,7 +1,7 @@
 import os
 
 # абсолютный путь до файла с приватниками
-wallets_file = os.path.abspath("data/wallets.txt")
+wallets_file = "data/wallets.txt"
 
 # количество свапов [от, до] (выбирается рандомное четное число из промежутка, [до] - обязательно четное число)
 swaps_range = [1, 4]

@@ -1,5 +1,2 @@
 .idea/
 __pycache__/
-.env
-swaps.py
-testing.py

@@ -12,13 +12,14 @@ class ClientBase:
         self.private_key = private_key
         self.public_key = Web3.to_checksum_address(self.w3.eth.account.from_key(private_key=private_key).address)
 
-    def send_tx(self,
-                to_adr: str,
-                from_adr: str = None,
-                data=None,
-                gas_multiplier=1.05,
-                value=None
-                ):
+    def send_tx(
+        self,
+        to_adr: str,
+        from_adr: str = None,
+        data=None,
+        gas_multiplier=1.05,
+        value=None
+    ):
         if not from_adr:
             from_adr = self.public_key
 

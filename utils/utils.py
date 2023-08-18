@@ -1,8 +1,9 @@
 from loguru import logger
-from config import swaps_range, sleep_time, wallets_file
+from config import swaps_range, wallets_file
 from tqdm import tqdm
 import random
 import time
+
 
 def read_file_by_lines(file_path) -> list:
     try:
@@ -21,7 +22,6 @@ def get_swaps_count() -> int:
     return random_even_number
 
 
-# на этом моменте я ахуел
 def generate_pairs() -> dict:
     return {key: get_swaps_count() for key in read_file_by_lines(wallets_file)}
 

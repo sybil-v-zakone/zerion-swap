@@ -1,10 +1,12 @@
 class Token:
-    def __init__(self,
-                 contract_address: str,
-                 abi: list | None,
-                 signature: str,
-                 decimals: int,
-                 is_native: bool):
+    def __init__(
+            self,
+            contract_address: str,
+            abi: list | None,
+            signature: str,
+            decimals: int,
+            is_native: bool
+    ):
         self.contract_address = contract_address
         self.abi = abi
         self.signature = signature
