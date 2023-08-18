@@ -17,4 +17,3 @@ usdc_deviation = [0.6, 0.9]
 usdt_deviation = [0.6, 0.9]
 
 polygon_rpc = "https://rpc.ankr.com/polygon"
-
