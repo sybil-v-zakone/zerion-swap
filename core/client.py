@@ -21,9 +21,9 @@ class ZerionClient(ClientBase):
             address=UNISWAP_CONTRACT_ADDRESS
         )
 
-    def swap(self, from_token: Token, to_token: Token, amount=None) -> tuple[bool, str]:
+    def swap(self, from_token: Token, to_token: Token, amount=None, deviation: float = 1.0) -> tuple[bool, str]:
         if not amount:
-            amount = int(self.balance_of(from_token) * 0.5)
+            amount = int(self.balance_of(from_token) * deviation)
         else:
             amount = from_token.to_wei(amount)
 
@@ -111,11 +111,3 @@ class ZerionClient(ClientBase):
             )
         ])
         return call_data
-
-    # ищем, в каком токене больший баланс и в каком меньший (чисто по цифрам, не имеет ничего общего с реальной стоймостью токенов)
-    def determine_balances(self, tokens: list[Token]) -> tuple[Token, Token]:
-        balances_asc = sorted(tokens, key=lambda e: e.from_wei(self.balance_of(e)))
-        max_balance_token = balances_asc.pop()
-        min_balance_token = next(token for token in balances_asc if token.is_native != max_balance_token.is_native)
-
-        return max_balance_token, min_balance_token

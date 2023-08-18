@@ -1,5 +1,12 @@
 import random
-from config import (polygon_rpc, sleep_time)
+from config import (
+    polygon_rpc,
+    sleep_time,
+    matic_deviation,
+    usdc_deviation,
+    usdt_deviation
+)
+
 from core.client import ZerionClient
 from loguru import logger
 
@@ -10,32 +17,39 @@ from utils.constants import (
     USDC_TOKEN
 )
 
+
 # типа warmup == прогрев => нагреватель == heater xddddd
 class Heater:
     def __init__(self):
         self.data = generate_pairs()
-        #self.clients = [ZerionClient(rpc=polygon_rpc, private_key=key) for key in self.data.keys()]
 
     def warmup(self):
-        tokens_available = [MATIC_TOKEN, USDC_TOKEN, USDT_TOKEN]
+        tokens_available = [USDC_TOKEN, USDT_TOKEN]
 
         while len(self.data) > 0:
             active_wallet = random.choice(list(self.data))
+            matic_multiplier = random.uniform(*matic_deviation)
+            to_token = random.choice(tokens_available)
+            to_token_multiplier = random.uniform(*usdc_deviation) if to_token.signature == "USDC" else random.uniform(*usdt_deviation)
+
             client = ZerionClient(rpc=polygon_rpc, private_key=active_wallet)
 
             logger.debug(f"Wallet: {client.public_key}")
 
             try:
-                from_token, to_token = client.determine_balances(tokens_available)
-            except StopIteration as ex:
-                logger.error(f"Error while determining tokens to swap from/to: {ex}")
-                continue
-
-            try:
-                tx_res, tx_message = client.swap(from_token, to_token)
+                tx_res, tx_message = client.swap(from_token=MATIC_TOKEN, to_token=to_token, deviation=matic_multiplier)
                 if tx_res:
                     logger.success(tx_message)
                     self.data[active_wallet] -= 1
+
+                    sleep(sleep_time)
+
+                    tx_res, tx_message = client.swap(from_token=to_token, to_token=MATIC_TOKEN,
+                                                     deviation=to_token_multiplier)
+
+                    if tx_res:
+                        logger.success(tx_message)
+                        self.data[active_wallet] -= 1
 
                     if self.data[active_wallet] == 0:
                         self.data.pop(active_wallet)

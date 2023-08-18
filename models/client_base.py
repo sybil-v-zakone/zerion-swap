@@ -74,7 +74,6 @@ class ClientBase:
 
     def approve(self, spender: str, token: Token, value: int):
         if token.is_native:
-            logger.info(f"{token.signature} is a native token, approve is not needed.")
             return True
 
         contract = self.w3.eth.contract(address=token.contract_address, abi=token.abi)
