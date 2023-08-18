@@ -32,7 +32,6 @@ class ZerionClient(ClientBase):
         is_approved = self.approve(ZERION_ROUTER_ADDRESS, from_token, amount)
         if not is_approved:
             return False, f"Failed to approve transaction"
-        time.sleep(5)
 
         caller_call_data = self.get_call_data(amount, from_token=from_token, to_token=to_token)
         # TODO: absoluteAmount
@@ -57,8 +56,8 @@ class ZerionClient(ClientBase):
 
         tx = self.send_tx(to_adr=ZERION_ROUTER_ADDRESS, data=data, value=amount)
         if self.verify_tx(tx):
-            return (True, (f"Successful swap: {from_token.from_wei(innative_amount)} {from_token.signature} -> {to_token.signature}. "
-                    f"Hash: https://polygonscan.com/tx/{tx.hex()}"))
+            return (True, (f"Successful swap: {from_token.from_wei(innative_amount)} {from_token.signature} -> {to_token.signature}\n "
+                    f"https://polygonscan.com/tx/{tx.hex()}"))
         return False, f"Failed swap: {from_token.from_wei(innative_amount)} {from_token.signature} -> {to_token.signature}. "
 
     def get_call_data(self, value: int, from_token: Token, to_token: Token):

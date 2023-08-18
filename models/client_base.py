@@ -4,7 +4,7 @@ from web3.contract import Contract
 from models.token import Token
 from loguru import logger
 from utils.constants import POLYGON_MATIC_TOKEN
-
+from utils.utils import sleep
 
 class ClientBase:
     def __init__(self, rpc: str, private_key: str):
@@ -87,6 +87,8 @@ class ClientBase:
         data = contract.encodeABI("approve", args=(spender, value))
         tx_hash = self.send_tx(contract.address, data=data)
         if self.verify_tx(tx_hash=tx_hash):
+            logger.success(f"Successful approve: {allowance} {token.signature}")
+            sleep([10, 15])
             return True
         logger.warning("Error while approving transaction")
         return False
