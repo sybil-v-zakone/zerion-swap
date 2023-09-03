@@ -1,3 +1,5 @@
+import json
+
 from loguru import logger
 from config import swaps_range, wallets_file
 from tqdm import tqdm
@@ -13,6 +15,18 @@ def read_file_by_lines(file_path) -> list:
         logger.error(f"{str(e)} while try to open \"{file_path}\"")
     except Exception as e:
         logger.error(f"{str(e)} while open txt file: \"{file_path}\"")
+
+
+def read_from_json(file_path):
+    try:
+        with open(file_path) as json_file:
+            return json.load(json_file)
+    except FileNotFoundError:
+        logger.error(f"File '{file_path}' not found.")
+        exit()
+    except Exception as e:
+        logger.error(f"Error while reading a JSON file '{file_path}': {e}.")
+        exit()
 
 
 def get_swaps_count() -> int:
